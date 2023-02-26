@@ -4,7 +4,7 @@ export const getMessages = async (req, res) => {
     const discussion_id = req.params.discussionId
     try {
         const allMessages = await pool.query(
-            "SELECT * FROM messages where discussion_id = $1 order by date DESC",
+            "SELECT * FROM messages where discussion_id = $1 order by date ASC",
             [discussion_id]
         );
         res.json(allMessages.rows)
