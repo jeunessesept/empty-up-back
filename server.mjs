@@ -115,8 +115,9 @@ server.get("/api/discussion/:discussionId/messages", jwtAuthentification, getMes
 
 //likes
 
-server.put("/api/building/like/:buildingId", jwtAuthentification, toLike)
+server.post("/api/building/like/:buildingId", jwtAuthentification, toLike)
 server.get("/api/building/likes",jwtAuthentification, getLike )
+
 server.listen(3000, () => {
   console.log("app is runing");
 });

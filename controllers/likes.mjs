@@ -69,11 +69,14 @@ import { pool } from "../models/dbPool.mjs"
 export const toLike = async (req, res) => {
     const user_id = req.userId
     const building_id = req.params.buildingId
+    console.log("coucou")
+    console.log(user_id)
 
     try{
-        const query = await pool.query('UPDATE like_per_building SET like = true WHERE user_id = $1 AND building_id = $2',
-        [user_id, building_id]);
-        res.status(200).json({ message: 'Like updated successfully' });
+        const query = await pool.query('INSERT INTO like_per_building (building_id, user_id, "like") VALUES ($1, $2, true)',
+        [building_id, user_id]);
+        console.log(query)
+        res.status(200).json({ message: 'Like updated successfully', query});
     }catch(error){
         console.error(error)
         return res.status(500).send({error: "internal server error"})
