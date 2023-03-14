@@ -1,15 +1,33 @@
 import { pool } from "../models/dbPool.mjs";
 
-export const getMessages = async (req, res) => {
+// export const getMessages = async (req, res) => {
+//     const discussion_id = req.params.discussionId
+//     try {
+//         const allMessages = await pool.query(
+//             "SELECT * FROM messages where discussion_id = $1 order by date ASC",
+//             [discussion_id]
+//         );
+//         res.json(allMessages.rows)
+//     } catch (error) {
+//         console.error(error.message)
+//     }
+// }
+
+export const getMessagesInfos = async (req, res) => {
     const discussion_id = req.params.discussionId
     try {
-        const allMessages = await pool.query(
-            "SELECT * FROM messages where discussion_id = $1 order by date ASC",
-            [discussion_id]
-        );
-        res.json(allMessages.rows)
-    } catch (error) {
-        console.error(error.message)
+        const allMessagesInfos = await pool.query('SELECT u.username AS user_username, ' +
+            'u.profilpicture_url AS user_profilpicture_url, ' +
+            'm.content, m.date ' +
+            'FROM messages m ' +
+            'JOIN users u ON m.user_id = u.id ' +
+            'WHERE m.discussion_id = $1 ' +
+            'ORDER BY m.date DESC',
+            [discussion_id])
+        return res.send(allMessagesInfos.rows)
+    } catch(error){
+        console.error(error)
+        return res.status(500).send({error:" internal server error"})
     }
 }
 
@@ -22,13 +40,13 @@ export const getLastMessage = async (req, res) => {
         )
         return res.json(lastMessage.rows)
     } catch (error) {
-        console.error(error.message)
+        console.error(error)
     }
 }
 
 
 export const postMessage = async (req, res) => {
-    const user_id = "17"
+    const user_id = req.userId
     const { content } = req.body
     const date = new Date()
     const discussion_id = req.params.discussionId;
@@ -41,16 +59,9 @@ export const postMessage = async (req, res) => {
             message: 'message posted',
         });
     } catch (error) {
-        console.error(error);
-        res.status(500).json({
-            status: 'error',
-            message: 'Error posting message',
-        });
+        cconsole.error(error)
+        return res.status(500).send({error:" internal server error"})
     }
 }
 
 
-export const deleteMessage = (req, res) => {
-
-
-}

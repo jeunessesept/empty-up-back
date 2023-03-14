@@ -42,7 +42,8 @@ import {
 import { createDiscussion,
 getDiscussion, deleteDiscussion, getLastMessage } from "./controllers/discussions.mjs";
 
-import { postMessage, getMessages } from "./controllers/messages.mjs";
+import { postMessage, getMessagesInfos  } from "./controllers/messages.mjs";
+import { toLike, getLike } from "./controllers/likes.mjs";
 
 import { uploadImage } from "./controllers/images.mjs";
 import jwtAuthentification from "./middleware/verifyToken.mjs";
@@ -110,9 +111,12 @@ server.delete("/api/discussion/delete/:id", jwtAuthentification, deleteDiscussio
 // messages
 
 server.post("/api/discussion/:discussionId/messages",jwtAuthentification, postMessage)
-server.get("/api/discussion/:discussionId/messages", jwtAuthentification, getMessages)
+server.get("/api/discussion/:discussionId/messages", jwtAuthentification, getMessagesInfos )
 
+//likes
 
+server.put("/api/building/like/:buildingId", jwtAuthentification, toLike)
+server.get("/api/building/likes",jwtAuthentification, getLike )
 server.listen(3000, () => {
   console.log("app is runing");
 });
