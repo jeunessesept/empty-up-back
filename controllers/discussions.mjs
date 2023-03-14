@@ -2,7 +2,7 @@ import { pool } from "../models/dbPool.mjs";
 
 
 export const getDiscussion = async (req, res) => {
-    const user1 = 1;
+    const user1 = req.userId;
     if (!user1) {
         return res.status(401).send({ error: "not authorized" })
     }
@@ -10,7 +10,6 @@ export const getDiscussion = async (req, res) => {
         [user1])
     const users = getUser2.rows
     const user2 = users.map(obj => obj.user_2);
-    console.log(user2)
 
     const results = [];
     try {
@@ -25,10 +24,10 @@ export const getDiscussion = async (req, res) => {
                 'WHERE d.user_1 = $1 AND d.user_2 = $2',
                 [user1, user])
             results.push(result1.rows)
-
-
         }
-        return res.status(200).json({ data: results });
+        const mergedResults = [].concat(...results);
+        console.log(mergedResults)
+        return res.status(200).json({ data: mergedResults });
     } catch (error) {
         console.error(error)
         return res.status(500).json({ error: 'An error occurred while processing the request.' });

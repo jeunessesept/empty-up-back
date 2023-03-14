@@ -85,7 +85,8 @@ export const login = async (req, res) => {
 
 export const uploadProfilPicture = async (req, res) => {
   const file = await req.files.image;
-  
+  console.log(file)
+  console.log(req)
   if (!file) {
     res.status(500).json({ error: "file missing" });
   }

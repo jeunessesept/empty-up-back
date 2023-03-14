@@ -104,8 +104,9 @@ server.get("/building/api/building/:id/comments", getComments);
 // discussions 
 
 server.post("/api/discussion",jwtAuthentification, createDiscussion)
-server.get("/api/discussion", getDiscussion, getLastMessage )
+server.get("/api/discussion", jwtAuthentification, getDiscussion, getLastMessage )
 server.delete("/api/discussion/delete/:id", jwtAuthentification, deleteDiscussion)
+
 // messages
 
 server.post("/api/discussion/:discussionId/messages",jwtAuthentification, postMessage)
