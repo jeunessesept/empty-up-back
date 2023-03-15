@@ -43,7 +43,7 @@ import { createDiscussion,
 getDiscussion, deleteDiscussion, getLastMessage } from "./controllers/discussions.mjs";
 
 import { postMessage, getMessagesInfos  } from "./controllers/messages.mjs";
-import { toLike, getLike } from "./controllers/likes.mjs";
+import { toLike, getLike, getLikeWithBuildingsInfos } from "./controllers/likes.mjs";
 
 import { uploadImage } from "./controllers/images.mjs";
 import jwtAuthentification from "./middleware/verifyToken.mjs";
@@ -75,6 +75,7 @@ server.post("/api/user/profilepicture",jwtAuthentification, uploadProfilPicture)
 server.delete("/api/user/unsubscribe",jwtAuthentification,unsubscribeUser);
 server.get("/api/user/logout", jwtAuthentification, logout);
 server.get("/api/user/mybuildings/:id", getUserAdminBuildings);
+server.get("/api/user/profile/favorites", jwtAuthentification, getLikeWithBuildingsInfos)
 
 // buildings related endpoints
 server.post("/api/addbuilding", jwtAuthentification, addBuilding);
@@ -99,25 +100,22 @@ server.put("/api/annonces/update", jwtAuthentification ,updateAnnonce);
 server.delete("/api/annonces/:id", jwtAuthentification ,deleteAnnonce);
 
 // comments
-
 server.post("/api/building/:id/postcomment",jwtAuthentification, postComment);
 server.get("/building/api/building/:id/comments", getComments);
 
 // discussions 
-
 server.post("/api/discussion",jwtAuthentification, createDiscussion)
 server.get("/api/discussion", jwtAuthentification, getDiscussion, getLastMessage )
 server.delete("/api/discussion/delete/:id", jwtAuthentification, deleteDiscussion)
 
 // messages
-
 server.post("/api/discussion/:discussionId/messages",jwtAuthentification, postMessage)
 server.get("/api/discussion/:discussionId/messages", jwtAuthentification, getMessagesInfos )
 
 //likes
-
 server.post("/api/building/like/:buildingId", jwtAuthentification, toLike)
-server.get("/api/building/likes",jwtAuthentification, getLike )
+server.get("/api/buildings/likes", jwtAuthentification, getLike)
+
 
 server.listen(3000, () => {
   console.log("app is runing");
