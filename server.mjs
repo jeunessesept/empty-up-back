@@ -66,6 +66,7 @@ server.use(
   })
 );
 
+
 // user related endpoints
 server.post("/api/user/register", register);
 server.post("/api/user/login", login);
@@ -92,7 +93,7 @@ server.post("/api/building/uploadimage",jwtAuthentification, uploadImage);
 
 // announcement
 server.post("/api/annonces/add", jwtAuthentification ,postAnnonces);
-server.get("/api/annonces", jwtAuthentification, getAllAnnonces);
+server.get("/api/annonces",jwtAuthentification, getAllAnnonces);
 server.get("/api/annonces/:id", jwtAuthentification, getOneAnnonce);
 server.put("/api/annonces/update", jwtAuthentification ,updateAnnonce);
 server.delete("/api/annonces/:id", jwtAuthentification ,deleteAnnonce);
