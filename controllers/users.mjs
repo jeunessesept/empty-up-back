@@ -15,6 +15,17 @@ export const register = async (req, res) => {
 
   if (!email || !password || !username)
     return res.status(400).send({ error: "invalid request" });
+  
+  const check = await pool.query("SELECT * FROM users where username = $1 OR email = $2", 
+  [username, email])
+  const arr = check.rows
+  if(arr.length != 0){
+    return res.status(400).send({error: 'username or email already registered'})
+  }
+  
+  if(password.length < 8){
+    return res.status(400).send({error: 'password needs to be at least 8 characters long'})
+  }
 
   if (password !== confirm_password) {
     return res.status(400).send({ error: "passwords do not match" });
